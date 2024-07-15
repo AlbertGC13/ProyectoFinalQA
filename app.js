@@ -12,8 +12,11 @@ const productController = require('./controllers/productController');
 
 const app = express();
 
+app.use(cors({
+  origin: 'http://localhost:3001', // URL del cliente
+  credentials: true // Permitir enviar y recibir cookies
+}));
 app.use(express.json());
-app.use(cors());
 app.use(session({ 
   secret: '0c8735e7592242c12f1fc7e3ba8e2ea7a34c3eb17f2eaddd2cf24f663493bcf3', 
   resave: false, 
@@ -49,12 +52,12 @@ passport.deserializeUser((id, done) => {
   }).catch(err => done(err, null));
 });
 
-app.post('/products', productController.createProduct);
-app.put('/products/:id', productController.updateProduct);
-app.delete('/products/:id', productController.deleteProduct);
+app.post('/products', isAdmin, productController.createProduct);
+app.put('/products/:id', isAdmin, productController.updateProduct);
+app.delete('/products/:id', isAdmin, productController.deleteProduct);
 
 app.use('/products', productRoutes);
-app.use('/users', userRoutes); // Usa las rutas de usuario
+app.use('/users', userRoutes); 
 
 db.sequelize.sync().then(() => {
   app.listen(3000, () => {

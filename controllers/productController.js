@@ -18,6 +18,10 @@ exports.getAllProducts = async (req, res) => {
   }
 };
 
+exports.getOneProduct = async (req, res) => {
+  // 
+};
+
 exports.updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -38,7 +42,7 @@ exports.deleteProduct = async (req, res) => {
     const { id } = req.params;
     const deleted = await db.Product.destroy({ where: { id } });
     if (deleted) {
-      res.status(204).send();
+      res.status(200).json("Product deleted successfully");
     } else {
       throw new Error('Product not found');
     }

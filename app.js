@@ -49,9 +49,9 @@ passport.deserializeUser((id, done) => {
   }).catch(err => done(err, null));
 });
 
-app.post('/products', isAdmin, productController.createProduct);
-app.put('/products/:id', isAdmin, productController.updateProduct);
-app.delete('/products/:id', isAdmin, productController.deleteProduct);
+app.post('/products', productController.createProduct);
+app.put('/products/:id', productController.updateProduct);
+app.delete('/products/:id', productController.deleteProduct);
 
 app.use('/products', productRoutes);
 app.use('/users', userRoutes); // Usa las rutas de usuario

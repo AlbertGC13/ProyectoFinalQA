@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "cucumber": "^6.0.7",
     "express": "^4.19.2",
     "express-session": "^1.18.0",

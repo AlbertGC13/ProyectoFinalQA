@@ -4,6 +4,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const db = require('./models');
+const cors = require('cors');
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes'); // Importa las rutas de usuario
 const { isAdmin } = require('./middleware/authMiddleware');
@@ -12,6 +13,7 @@ const productController = require('./controllers/productController');
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 app.use(session({ 
   secret: '0c8735e7592242c12f1fc7e3ba8e2ea7a34c3eb17f2eaddd2cf24f663493bcf3', 
   resave: false, 

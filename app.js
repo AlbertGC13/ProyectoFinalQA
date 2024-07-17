@@ -20,7 +20,10 @@ app.use(express.json());
 app.use(session({ 
   secret: '0c8735e7592242c12f1fc7e3ba8e2ea7a34c3eb17f2eaddd2cf24f663493bcf3', 
   resave: false, 
-  saveUninitialized: false 
+  saveUninitialized: false, 
+  cookie: {
+    maxAge: 30 * 60 * 10000 // 30 minutos
+  }
 }));
 app.use(passport.initialize());
 app.use(passport.session());

@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   web:
     build: .
@@ -6,11 +7,20 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=mi_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
     volumes:
       - .:/app
       - /app/node_modules
+    depends_on:
+      - db
+    networks:
+      - backend
+
   db:
-    image: postgres
+    image: postgres:latest
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
@@ -19,6 +29,27 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  client:
+    build:
+      context: ../cliente/gestion-inventario-QA
+    ports:
+      - "3001:3000"  # Ajustar esto a "3001:3000" para que el cliente use el puerto 3001
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ../cliente/gestion-inventario-QA:/app
+      - /app/node_modules
+    depends_on:
+      - web
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
 
 volumes:
   postgres_data:

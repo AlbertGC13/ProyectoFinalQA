@@ -17,6 +17,7 @@ app.use(cors({
   credentials: true // Permitir enviar y recibir cookies
 }));
 app.use(express.json());
+
 app.use(session({ 
   secret: '0c8735e7592242c12f1fc7e3ba8e2ea7a34c3eb17f2eaddd2cf24f663493bcf3', 
   resave: false, 
@@ -55,12 +56,32 @@ passport.deserializeUser((id, done) => {
   }).catch(err => done(err, null));
 });
 
+// Middleware para actualizar la sesión
+app.use((req, res, next) => {
+  if (req.session) {
+    req.session._garbage = Date();
+    req.session.touch();
+  }
+  next();
+});
+
 app.post('/products', isAdmin, productController.createProduct);
 app.put('/products/:id', isAdmin, productController.updateProduct);
 app.delete('/products/:id', isAdmin, productController.deleteProduct);
 
 app.use('/products', productRoutes);
 app.use('/users', userRoutes); 
+
+// Ruta de cierre de sesión
+app.get('/logout', (req, res) => {
+  req.logout();
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send('Error al cerrar sesión');
+    }
+    res.redirect('/'); // redirige a la página de inicio después de cerrar sesión
+  });
+});
 
 db.sequelize.sync().then(() => {
   app.listen(3000, () => {

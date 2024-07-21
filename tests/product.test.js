@@ -33,7 +33,14 @@ test.describe('Product Management', () => {
 
     await page.waitForURL('http://localhost:3001/app/products');
 
-    // Verificar que el producto fue creado
-    //await page.goto('http://localhost:3001/app/products');
   });
+
+  test('Delete a product', async ({ page }) => {
+
+    await page.click('button[id="deleteProduct"]');
+    await page.click('button[id="confirmDelete"]');
+  });
+
 });
+
+

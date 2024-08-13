@@ -6,7 +6,8 @@ const bcrypt = require('bcryptjs');
 const db = require('./models');
 const cors = require('cors');
 const productRoutes = require('./routes/productRoutes');
-const userRoutes = require('./routes/userRoutes'); // Importa las rutas de usuario
+const userRoutes = require('./routes/userRoutes');
+const stockRoutes = require('./routes/stockRoutes'); // Asegúrate de que esté correctamente importado
 const { isAdmin } = require('./middleware/authMiddleware');
 const productController = require('./controllers/productController');
 
@@ -65,12 +66,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post('/products', isAdmin, productController.createProduct);
-app.put('/products/:id', isAdmin, productController.updateProduct);
-app.delete('/products/:id', isAdmin, productController.deleteProduct);
-
+// Asegúrate de usar las rutas correctamente
 app.use('/products', productRoutes);
 app.use('/users', userRoutes); 
+app.use('/stock-movements', stockRoutes);
 
 // Ruta de cierre de sesión
 app.get('/logout', (req, res) => {

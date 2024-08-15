@@ -4,7 +4,7 @@ const router = express.Router();
 const db = require('../models');
 const { isAdmin } = require('../middleware/authMiddleware');
 
-router.post('/register', isAdmin, async (req, res) => {
+router.post('/register', async (req, res) => {
   try {
     const { username, password, role } = req.body;
     const user = await db.User.create({ username, password, role });

@@ -7,9 +7,10 @@ const db = require('./models');
 const cors = require('cors');
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
-const stockRoutes = require('./routes/stockRoutes'); // Asegúrate de que esté correctamente importado
+const stockRoutes = require('./routes/stockRoutes');
 const { isAdmin } = require('./middleware/authMiddleware');
 const productController = require('./controllers/productController');
+require('dotenv').config();
 
 const app = express();
 
@@ -87,3 +88,5 @@ db.sequelize.sync().then(() => {
     console.log('Server is running on port 3000');
   });
 });
+
+console.log(process.env);

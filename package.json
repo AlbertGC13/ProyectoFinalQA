@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "cucumber-js",
-    "start": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "start": "npx sequelize-cli db:migrate && node app.js"
   },
   "keywords": [],
   "author": "",

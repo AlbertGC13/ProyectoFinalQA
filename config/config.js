@@ -1,12 +1,16 @@
-require('dotenv').config(); // Cargar variables de entorno desde .env
+require('dotenv').config(); // Asegúrate de cargar las variables de entorno
 
 module.exports = {
   development: {
-    username: process.env.PGUSER,
-    password: process.env.PGPASSWORD,
-    database: process.env.PGDATABASE,
-    host: process.env.PGHOST,
-    port: process.env.PGPORT,
-    dialect: "postgres"
+    use_env_variable: 'DATABASE_URL',
+    dialect: 'postgres',
+  },
+  test: {
+    use_env_variable: 'DATABASE_URL',
+    dialect: 'postgres',
+  },
+  production: {
+    use_env_variable: 'DATABASE_URL',
+    dialect: 'postgres',
   },
 };

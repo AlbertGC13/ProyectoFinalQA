@@ -1,4 +1,4 @@
-require('dotenv').config(); // Asegúrate de cargar las variables de entorno
+require('dotenv').config();
 
 module.exports = {
   development: {

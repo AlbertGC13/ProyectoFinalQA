@@ -1,19 +1,19 @@
-# Usar una imagen base de Node.js
-FROM node:alpine
+# Usamos la imagen base de Node.js
+FROM node:20-alpine
 
-# Crear y establecer el directorio de la aplicación
+# Establecemos el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copiar los archivos package.json y package-lock.json
+# Copiamos los archivos package.json y package-lock.json al contenedor
 COPY package*.json ./
 
-# Instalar las dependencias
+# Instalamos las dependencias
 RUN npm install
 
-# Copiar el resto de los archivos de la aplicación
+# Copiamos el resto de los archivos de la aplicación
 COPY . .
 
-# Exponer el puerto de la aplicación
+# Exponemos el puerto en el que corre la aplicación
 EXPOSE 3000
 
 # Comando para iniciar la aplicación

@@ -14,7 +14,7 @@ const productController = require('./controllers/productController');
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:3001', // URL del cliente
+  origin: ['http://localhost:3001', 'https://proyectofinalqa-production.up.railway.app'],// URL del cliente
   credentials: true // Permitir enviar y recibir cookies
 }));
 app.use(express.json());

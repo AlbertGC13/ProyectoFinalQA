@@ -1,10 +1,26 @@
 {
-    "development": {
-      "username": "postgres",
-      "password": "admin",
-      "database": "mi_db",
-      "host": "127.0.0.1",
-      "dialect": "postgres"
-    }
+  "development": {
+    "username": "postgres",
+    "password": "tBrVBitjymaJRsUbUKeitDDZoYViivwd",
+    "database": "railway",
+    "host": "postgres.railway.internal",
+    "port": "5432",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "tBrVBitjymaJRsUbUKeitDDZoYViivwd",
+    "database": "railway",
+    "host": "postgres.railway.internal",
+    "port": "5432",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "tBrVBitjymaJRsUbUKeitDDZoYViivwd",
+    "database": "railway",
+    "host": "postgres.railway.internal",
+    "port": "5432",
+    "dialect": "postgres"
   }
-  
+}

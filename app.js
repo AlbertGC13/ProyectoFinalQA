@@ -28,7 +28,9 @@ app.use(session({
   resave: false, 
   saveUninitialized: false, 
   cookie: {
-    maxAge: 30 * 60 * 10000 // 30 minutos
+    maxAge: 30 * 60 * 10000, // 30 minutos
+    secure: true,  // Asegúrate de que sea 'true' en producción
+    sameSite: 'None'  // Esto es crucial para que las cookies funcionen en un entorno de dominio cruzado
   }
 }));
 app.use(passport.initialize());
@@ -52,11 +54,13 @@ passport.use(new LocalStrategy(
 ));
 
 passport.serializeUser((user, done) => {
+  console.log('Serializing user:', user);
   done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
   db.User.findByPk(id).then(user => {
+    console.log('Deserializing user:', user);
     done(null, user);
   }).catch(err => done(err, null));
 });

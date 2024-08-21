@@ -53,16 +53,25 @@ passport.use(new LocalStrategy(
       console.log("Password from DB:", user.password);
       console.log("Password provided:", password);
 
-      bcrypt.compare(password, user.password, (err, res) => {
-        if (res) {
-          return done(null, user);
-        } else {
-          return done(null, false, { message: 'Incorrect password.' });
-        }
-      });
+      if (password === user.password) {
+        // Contraseña correcta
+        return done(null, user);  // Autenticación exitosa
+      } else {
+        // Contraseña incorrecta
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      
+      // bcrypt.compare(password, user.password, (err, res) => {
+      //   if (res) {
+      //     return done(null, user);
+      //   } else {
+      //     return done(null, false, { message: 'Incorrect password.' });
+      //   }
+      // });
     }).catch(err => done(err));
   }
 ));
+
 
 
 passport.serializeUser((user, done) => {
@@ -107,12 +116,9 @@ const createDefaultUser = async () => {
     const adminUser = await db.User.findOne({ where: { username: 'admin' } });
 
     if (!adminUser) {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash('admin', salt);
-
       await db.User.create({
         username: 'admin',
-        password: hashedPassword,
+        password: 'admin',  // Contraseña sin hashear
         role: 'admin'
       });
       console.log('Default admin user created');
@@ -123,6 +129,29 @@ const createDefaultUser = async () => {
     console.error('Error creating default admin user:', error);
   }
 };
+
+
+// const createDefaultUser = async () => {
+//   try {
+//     const adminUser = await db.User.findOne({ where: { username: 'admin' } });
+
+//     if (!adminUser) {
+//       const salt = await bcrypt.genSalt(10);
+//       const hashedPassword = await bcrypt.hash('admin', salt);
+
+//       await db.User.create({
+//         username: 'admin',
+//         password: hashedPassword,
+//         role: 'admin'
+//       });
+//       console.log('Default admin user created');
+//     } else {
+//       console.log('Admin user already exists');
+//     }
+//   } catch (error) {
+//     console.error('Error creating default admin user:', error);
+//   }
+// };
 
 // Llamada a la función después de la sincronización de la base de datos
 db.sequelize.sync().then(async () => {

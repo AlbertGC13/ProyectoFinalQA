@@ -23,17 +23,23 @@ app.options('*', cors()); // Esto permite que todas las rutas respondan correcta
 
 app.use(express.json());
 
+const isProduction = process.env.NODE_ENV === 'production';
+console.log('Environment:', process.env.NODE_ENV);
+console.log('Is Production:', isProduction);
+
 app.use(session({ 
   secret: '0c8735e7592242c12f1fc7e3ba8e2ea7a34c3eb17f2eaddd2cf24f663493bcf3', 
   resave: false, 
   saveUninitialized: false, 
   cookie: {
     maxAge: 30 * 60 * 10000, // 30 minutos
-    secure: process.env.NODE_ENV === 'production' ? true : false, // Solo true en producción
-    httpOnly: true, // Las cookies no estarán disponibles a través de JavaScript
-    sameSite: 'None'  // Esto es crucial para que las cookies funcionen en un entorno de dominio cruzado
+    secure: isProduction,
+    httpOnly: true,
+    sameSite: isProduction ? 'None' : 'Lax'
   }
 }));
+
+console.log('Session cookie secure:', isProduction);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -51,7 +57,6 @@ passport.use(new LocalStrategy(
         if (res) {
           return done(null, user);
         } else {
-          console.log("Password mismatch");
           return done(null, false, { message: 'Incorrect password.' });
         }
       });
@@ -102,9 +107,12 @@ const createDefaultUser = async () => {
     const adminUser = await db.User.findOne({ where: { username: 'admin' } });
 
     if (!adminUser) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash('admin', salt);
+
       await db.User.create({
         username: 'admin',
-        password: bcrypt.hashSync('admin', 10), // Asegúrate de usar un hash seguro para la contraseña
+        password: hashedPassword,
         role: 'admin'
       });
       console.log('Default admin user created');

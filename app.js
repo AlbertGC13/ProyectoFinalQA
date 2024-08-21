@@ -29,7 +29,8 @@ app.use(session({
   saveUninitialized: false, 
   cookie: {
     maxAge: 30 * 60 * 10000, // 30 minutos
-    secure: true,  // Asegúrate de que sea 'true' en producción
+    secure: process.env.NODE_ENV === 'production' ? true : false, // Solo true en producción
+    httpOnly: true, // Las cookies no estarán disponibles a través de JavaScript
     sameSite: 'None'  // Esto es crucial para que las cookies funcionen en un entorno de dominio cruzado
   }
 }));
@@ -42,16 +43,22 @@ passport.use(new LocalStrategy(
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }
+
+      console.log("Password from DB:", user.password);
+      console.log("Password provided:", password);
+
       bcrypt.compare(password, user.password, (err, res) => {
         if (res) {
           return done(null, user);
         } else {
+          console.log("Password mismatch");
           return done(null, false, { message: 'Incorrect password.' });
         }
       });
     }).catch(err => done(err));
   }
 ));
+
 
 passport.serializeUser((user, done) => {
   console.log('Serializing user:', user);

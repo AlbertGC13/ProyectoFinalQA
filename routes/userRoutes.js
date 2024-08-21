@@ -19,6 +19,8 @@ router.post('/register', async (req, res) => {
 
 // Endpoint de login
 router.post('/login', (req, res, next) => {
+  console.log("Session:", req.session);
+  console.log("Cookies:", req.cookies);
   console.log('Intentando iniciar sesión para el usuario:', req.body.username);
   passport.authenticate('local', (err, user, info) => {
     if (err) {

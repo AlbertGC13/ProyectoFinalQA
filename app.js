@@ -108,8 +108,9 @@ const createDefaultUser = async () => {
 // Llamada a la función después de la sincronización de la base de datos
 db.sequelize.sync().then(async () => {
   await createDefaultUser();
-  app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
   });
 });
 

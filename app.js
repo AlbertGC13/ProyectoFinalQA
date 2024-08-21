@@ -18,6 +18,9 @@ app.use(cors({
   origin: ['http://localhost:3001', 'https://proyectofinalqa-production.up.railway.app'],// URL del cliente
   credentials: true // Permitir enviar y recibir cookies
 }));
+
+app.options('*', cors()); // Esto permite que todas las rutas respondan correctamente a las solicitudes preflight OPTIONS
+
 app.use(express.json());
 
 app.use(session({ 
@@ -83,10 +86,30 @@ app.get('/logout', (req, res) => {
   });
 });
 
-db.sequelize.sync().then(() => {
+const createDefaultUser = async () => {
+  try {
+    const adminUser = await db.User.findOne({ where: { username: 'admin' } });
+
+    if (!adminUser) {
+      await db.User.create({
+        username: 'admin',
+        password: bcrypt.hashSync('admin', 10), // Asegúrate de usar un hash seguro para la contraseña
+        role: 'admin'
+      });
+      console.log('Default admin user created');
+    } else {
+      console.log('Admin user already exists');
+    }
+  } catch (error) {
+    console.error('Error creating default admin user:', error);
+  }
+};
+
+// Llamada a la función después de la sincronización de la base de datos
+db.sequelize.sync().then(async () => {
+  await createDefaultUser();
   app.listen(3000, () => {
     console.log('Server is running on port 3000');
   });
 });
 
-console.log(process.env);

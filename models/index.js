@@ -1,15 +1,27 @@
 require('dotenv').config();
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: 'postgres',
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false, // Esto es necesario para conexiones SSL en Railway
+let sequelize;
+
+if (process.env.NODE_ENV === 'production') {
+  // Configuración para producción
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false, // Necesario para conexiones SSL en Railway
+      },
     },
-  },
-});
+  });
+} else {
+  // Configuración para desarrollo local
+  sequelize = new Sequelize(process.env.POSTGRES_DB, process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT || 5432,
+    dialect: 'postgres',
+  });
+}
 
 const db = {};
 db.Sequelize = Sequelize;

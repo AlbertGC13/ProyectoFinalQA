@@ -18,8 +18,20 @@ const isProduction = process.env.NODE_ENV === 'production';
 console.log('Environment:', process.env.NODE_ENV);
 console.log('Is Production:', isProduction);
 
+const allowedOrigins = [
+  'https://proyectofinalqa-production.up.railway.app',
+  'http://localhost:3001'
+];
+
 app.use(cors({
-  origin: isProduction ? 'https://proyectofinalqa-production.up.railway.app' : 'http://localhost:3001',
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
   credentials: true
 }));
 

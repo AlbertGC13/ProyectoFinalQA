@@ -36,6 +36,7 @@ router.post('/login', (req, res, next) => {
         console.error('Error al iniciar sesión:', err);
         return res.status(500).json({ message: 'Error al iniciar sesión' });
       }
+      console.log("Session después de autenticar:", req.session);
       console.log('Inicio de sesión exitoso para el usuario:', user.username);
       return res.status(200).json({ message: 'Login successful' });
     });

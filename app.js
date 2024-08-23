@@ -92,6 +92,8 @@ app.use((req, res, next) => {
     req.session._garbage = Date();
     req.session.touch();
   }
+  console.log("Session:", req.session);
+  console.log("Cookies:", req.cookies);
   next();
 });
 

@@ -20,7 +20,8 @@ console.log('Is Production:', isProduction);
 
 const allowedOrigins = [
   'https://proyectofinalqa-production.up.railway.app',
-  'http://localhost:3001'
+  'http://localhost:3001',
+  'https://reimagined-dollop-ppj6r5wxvprc4qj-3001.app.github.dev'
 ];
 
 app.use(cors({

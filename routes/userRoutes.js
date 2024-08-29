@@ -5,7 +5,7 @@ const db = require('../models');
 const { isAdmin } = require('../middleware/authMiddleware');
 
 // Endpoint de registro
-router.post('/register', async (req, res) => {
+router.post('/register', isAdmin, async (req, res) => {
   try {
     const { username, password, role } = req.body;
     console.log('Intentando registrar usuario:', username);

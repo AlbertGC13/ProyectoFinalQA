@@ -8,7 +8,7 @@ const cors = require('cors');
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
 const stockRoutes = require('./routes/stockRoutes');
-const { isAdmin } = require('./middleware/authMiddleware');
+const { isAdmin, isEmployee, isAuthenticated } = require('./middleware/authMiddleware');
 const productController = require('./controllers/productController');
 require('dotenv').config();
 

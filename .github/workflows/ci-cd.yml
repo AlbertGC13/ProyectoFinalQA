@@ -29,11 +29,8 @@ jobs:
     - name: Run integration tests
       run: npm run test:integration
     
-    - name: Run security tests
-      run: npm run test:security
-    
-    - name: Run usability tests
-      run: npm run test:usability
+    - name: Run Playwright tests
+      run: npm run test:e2e
     
     - name: Set up test environment
       run: docker-compose -f docker-compose.test.yml up -d
